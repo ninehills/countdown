@@ -5,6 +5,8 @@
 ```bash
 conda create -n countdown python=3.10
 conda activate countdown
+
+cp env.template .env
 ```
 
 ## 1. 准备数据
