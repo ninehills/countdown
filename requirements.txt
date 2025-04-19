@@ -1,0 +1,5 @@
+tqdm==4.67.1
+datasets==3.5.0
+bespokelabs-curator==0.1.23.post1
+dotenv==0.9.9
+vllm==0.8.4
