@@ -14,11 +14,7 @@ from pydantic import BaseModel
 
 load_dotenv()
 
-SYSTEM_PROMPT = """You are a helpful assistant. You first thinks about the reasoning process in the mind and then provides the user with the answer."""
-
-USER_PROMPT_TPL = """Using the numbers {numbers}, create an equation that equals {target}. You can use basic arithmetic operations (+, -, *, /) one or multiple times but each number can only be used once, and you must use all the numbers. Show your work in <think> </think> tags. And return the final equation in <answer> </answer> tags, for example <answer>(1 + 2) / 3</answer>. Think step by step inside <think> tags."""
-
-REASONING_USER_PROMPT_TPL = """Using the numbers {numbers}, create an equation that equals {target}. You can use basic arithmetic operations (+, -, *, /) one or multiple times but each number can only be used once, and you must use all the numbers. Return the final equation in <answer> </answer> tags, for example <answer>(1 + 2) / 3</answer>."""
+from constant import SYSTEM_PROMPT, USER_PROMPT_TPL, REASONING_USER_PROMPT_TPL, parse_user_prompt
 
 
 class EvalResult(BaseModel):
@@ -51,10 +47,7 @@ class Reasoner(curator.LLM):
             return [
                 {
                     "role": "user",
-                    "content": REASONING_USER_PROMPT_TPL.format(
-                        numbers=", ".join(map(str, input["numbers"])),
-                        target=input["target"],
-                    ),
+                    "content": parse_user_prompt(REASONING_USER_PROMPT_TPL, input["numbers"], input["target"]),
                 },
             ]
         else:
@@ -62,10 +55,7 @@ class Reasoner(curator.LLM):
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {
                     "role": "user",
-                    "content": USER_PROMPT_TPL.format(
-                        numbers=", ".join(map(str, input["numbers"])),
-                        target=input["target"],
-                    ),
+                    "content": parse_user_prompt(USER_PROMPT_TPL, input["numbers"], input["target"]),
                 },
             ]
 
@@ -174,7 +164,7 @@ if __name__ == "__main__":
 
     print(f">>> Start run eval {unique_model_name}")
     response = llm(problems)
-    response.save_to_disk(f"data/test_{unique_model_name}_results")
+    response.save_to_disk(f"output/test_{unique_model_name}_results")
 
     total_count = len(response)
     correct_count = len(response.filter(lambda x: x["correct"]))
