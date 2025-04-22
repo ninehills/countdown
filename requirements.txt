@@ -5,3 +5,4 @@ dotenv==0.9.9
 vllm==0.8.4
 unsloth==2025.3.19
 ipywidgets
+wandb

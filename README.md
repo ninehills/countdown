@@ -5,8 +5,10 @@
 ```bash
 conda create -n countdown python=3.10
 conda activate countdown
+pip install -r requirements.txt
 
 cp env.template .env
+# 后续部分环节需要修改 .env 中的 API Key。
 ```
 
 ## 1. 准备数据
@@ -81,9 +83,3 @@ cp env.template .env
 - 学习率调度器：linear
 
 结果：
-
-
-
-
-
-
