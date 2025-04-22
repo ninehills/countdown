@@ -80,7 +80,7 @@ cp env.template .env
 - 训练轮数： 5
 - beta： 0.001（beta越小，KL散度惩罚越小，模型学习更自由）
 - 学习率： 5e-6
-- 学习率调度器：linear
+- 学习率调度器：constant
 
 结果：
 
@@ -95,18 +95,23 @@ cp env.template .env
 - 训练轮数： 4
 - beta： 0.001（beta越小，KL散度惩罚越小，模型学习更自由）
 - 学习率： 5e-6
-- 学习率调度器：linear
-- 增加 eval 数据集
+- 学习率调度器：constant
+- 增加模型输出记录并上传到wandb，更好的观察模型的变化。
 
-### 7.4 尝试4：蒸馏后 1.5B 模型 + 1000 条简单数据 + RL + 长输出
+
+### 7.4 v4：蒸馏后 1.5B 模型 + 10000 条复杂数据 + RL + 长输出
 
 参数：
 
 - 基座模型： qwen2.5-1.5b-sft-distill-merged
-- 训练数据： 1000 条复杂数据
+- 训练数据： 10000 条复杂数据
 - 训练轮数： 3
+- Batch_size：8（是 num_generations 的倍数）
+- 梯度累积：4（保证总batch_size 为32）
 - beta： 0.001（beta越小，KL散度惩罚越小，模型学习更自由）
 - 学习率： 5e-6
 - 学习率调度器：linear
 - max_seq_length: 8192
+
+单张显卡资源不足，后续安排。
 
