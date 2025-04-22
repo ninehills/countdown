@@ -177,3 +177,5 @@ cython_debug/
 output/
 unsloth_*/
 wandb/
+.DS_Store
+grpo_trainer_lora_model/

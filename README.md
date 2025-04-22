@@ -17,6 +17,10 @@ cp env.template .env
 
 使用 `2_eval_basic.ipynb` 评测选择的基座模型在数据集上的表现。
 
+作业：
+
+- 编写简单的 result_view.py 脚本，打印出评估结果中原因分布。
+
 ## 3. 合成简单的 SFT 数据
 
 使用 `3_sft_data_simple.ipynb` 合成简单 SFT 数据。
@@ -34,3 +38,52 @@ cp env.template .env
 ## 6. 使用蒸馏数据进行 SFT 训练
 
 使用 `6_sft_train_distill.ipynb` 使用蒸馏数据进行 SFT 训练。
+
+基座模型： Qwen2.5-1.5B-Instruct
+
+作业：
+
+- 编写 `6_sft_train_distill_reasoning.ipynb` 使用蒸馏数据进行 SFT 训练。
+- 基座模型： DeepSeek-R1-Distill-Qwen-1.5B
+- 主要是 Prompt 的不同。
+
+
+## 7. 进行 GRPO RL 训练
+
+使用 `7_rl_train_grpo.ipynb` 进行 GRPO RL 训练。
+
+### 7.1 尝试1：1.5B 模型直接 RL
+
+参数：
+
+- 基座模型： Qwen2.5-1.5B-Instruct
+- 训练数据： 1000 条复杂数据
+- 训练轮数： 2
+- beta： 0.04
+- 学习率： 5e-6
+- 学习率调度器：cosine
+
+结果：
+
+- 过难拿不到正确性奖励，格式奖励打满后模型开始无变化。
+
+![](./rl1.png)
+
+### 7.2 尝试2：1.5B 模型 + 1000 条简单数据 + 直接 RL
+
+参数：
+
+- 基座模型： Qwen2.5-1.5B-Instruct
+- 训练数据： 1000 条简单数据
+- 训练轮数： 2
+- beta： 0.001（beta越小，KL散度惩罚越小，模型学习更自由）
+- 学习率： 5e-6
+- 学习率调度器：linear
+
+结果：
+
+
+
+
+
+

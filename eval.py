@@ -34,6 +34,7 @@ class Reasoner(curator.LLM):
     """Curator class for Countdown dataset."""
 
     return_completions_object = True
+    #  response_format = EvalResult
 
     def __init__(self, **kwargs):
         # 是否为原生推理模型，不同的模型的 Prompt 不同
@@ -137,6 +138,11 @@ if __name__ == "__main__":
     parser.add_argument("--temperature", type=float, default=0.6)
     parser.add_argument("--max_tokens", type=int, default=1024)
     parser.add_argument("--is_reasoning", type=bool, default=False)
+    parser.add_argument("--output_prefix", type=str, default="test")
+    parser.add_argument("--max_requests_per_minute", type=int, default=200)
+    parser.add_argument("--max_tokens_per_minute", type=int, default=1000000)
+    parser.add_argument("--max_concurrent_requests", type=int, default=50)
+
     args = parser.parse_args()
 
     print(f">>> All args: {args}")
@@ -155,6 +161,9 @@ if __name__ == "__main__":
             "api_key": os.getenv(f"{args.provider.upper()}_API_KEY"),
             "base_url": os.getenv(f"{args.provider.upper()}_BASE_URL"),
             "invalid_finish_reasons": [],  # 默认是 length 和 content_filter，但是这两个reason 重试大概率还是会失败，所以没必要重试。
+            "max_requests_per_minute": args.max_requests_per_minute,
+            "max_tokens_per_minute": args.max_tokens_per_minute,
+            "max_concurrent_requests": args.max_concurrent_requests,
         },
         is_reasoning=args.is_reasoning,
     )
@@ -164,7 +173,7 @@ if __name__ == "__main__":
 
     print(f">>> Start run eval {unique_model_name}")
     response = llm(problems)
-    response.save_to_disk(f"output/test_{unique_model_name}_results")
+    response.save_to_disk(f"output/{args.output_prefix}_{unique_model_name}_results")
 
     total_count = len(response)
     correct_count = len(response.filter(lambda x: x["correct"]))
