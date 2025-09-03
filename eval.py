@@ -16,6 +16,7 @@ load_dotenv()
 
 from constant import SYSTEM_PROMPT, USER_PROMPT_TPL, REASONING_USER_PROMPT_TPL, parse_user_prompt
 
+os.environ['CURATOR_VIEWER'] = "0" # force set CURATOR_VIEWER = 0
 
 class EvalResult(BaseModel):
     """Result of the judge's evaluation."""
