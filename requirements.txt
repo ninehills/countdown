@@ -1,9 +1,10 @@
-tqdm==4.67.1
-datasets==3.5.0
-bespokelabs-curator==0.1.23.post1
-dotenv==0.9.9
-vllm==0.8.4
-unsloth==2025.3.19
-accelerate==1.7.0 # https://github.com/huggingface/accelerate/issues/3641
+tqdm
+datasets
+bespokelabs-curator
+dotenv
+vllm
+unsloth
+accelerate
 ipywidgets
 wandb
+modelscope
